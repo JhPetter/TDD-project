@@ -9,24 +9,18 @@ import androidx.lifecycle.ViewModelProvider
 import com.petter.testapplication.databinding.FragmentPlaylistBinding
 import com.petter.testapplication.entity.Playlist
 import com.petter.testapplication.presentation.factory.PlaylistViewModelFactory
-import com.petter.testapplication.repository.PlayListRepository
-import com.petter.testapplication.service.PlaylistService
-import com.petter.testapplication.service.api.ApiService
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class PlaylistFragment : Fragment() {
 
     private lateinit var binding: FragmentPlaylistBinding
     private val adapter: PlaylistAdapter by lazy { PlaylistAdapter() }
-    private lateinit var playlistViewModelFactory: PlaylistViewModelFactory
+
+    @Inject
+    lateinit var playlistViewModelFactory: PlaylistViewModelFactory
     private lateinit var playlistViewModel: PlaylistViewModel
-
-    private val service = PlaylistService(object:ApiService{
-        override suspend fun fetchAllPlaylist(): List<Playlist> {
-            TODO("Not yet implemented")
-        }
-
-    })
-    private val repository = PlayListRepository(service)
 
     companion object {
 
@@ -46,7 +40,6 @@ class PlaylistFragment : Fragment() {
     }
 
     private fun setUpView() {
-        playlistViewModelFactory = PlaylistViewModelFactory(repository)
         playlistViewModel =
             ViewModelProvider(this, playlistViewModelFactory).get(PlaylistViewModel::class.java)
         binding.adapter = adapter
@@ -55,6 +48,13 @@ class PlaylistFragment : Fragment() {
     private fun observeViewModels() {
         playlistViewModel.playlistLiveData.observe(viewLifecycleOwner) {
             setUpList(it)
+        }
+        playlistViewModel.loaderLiveData.observe(viewLifecycleOwner) {
+            when (it) {
+                true -> binding.playlistLoader.visibility = View.VISIBLE
+                else -> binding.playlistLoader.visibility = View.GONE
+            }
+
         }
     }
 

@@ -19,9 +19,9 @@
             android:id="@+id/playlistImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/playlist"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/playlist" />
 
         <TextView
             android:id="@+id/playlistName"

@@ -2,14 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.petter.testapplication">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
+        android:name=".presentation.PlaylistApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TestApplication">
-        <activity android:name=".presentation.ui.MainActivity"
+        android:theme="@style/Theme.TestApplication"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".presentation.ui.MainActivity"
             android:label="@string/playlist_screen_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

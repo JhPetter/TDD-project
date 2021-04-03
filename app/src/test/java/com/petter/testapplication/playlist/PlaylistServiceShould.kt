@@ -1,7 +1,7 @@
 package com.petter.testapplication.playlist
 
 import com.petter.testapplication.BaseUnitTest
-import com.petter.testapplication.entity.Playlist
+import com.petter.testapplication.entity.PlaylistRaw
 import com.petter.testapplication.service.PlaylistService
 import com.petter.testapplication.service.api.ApiService
 import junit.framework.TestCase.assertEquals
@@ -17,7 +17,7 @@ class PlaylistServiceShould : BaseUnitTest() {
 
     private lateinit var service: PlaylistService
     private val api: ApiService = mock()
-    private val playlists = mock<List<Playlist>>()
+    private val playlists = mock<List<PlaylistRaw>>()
 
     @Test
     fun fetchPlaylistFromApi() = runBlockingTest {

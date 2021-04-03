@@ -33,6 +33,7 @@ class PlaylistAdapter : RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Playlist) {
             binding.setVariable(BR.playlist, item)
+            binding.playlistImage.setImageResource(item.image)
         }
     }
 }

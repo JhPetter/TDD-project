@@ -9,6 +9,7 @@ import com.petter.testapplication.presentation.ui.MainActivity
 import com.petter.util.ntnChildOf
 import com.schibsted.spain.barista.assertion.BaristaRecyclerViewAssertions.assertRecyclerViewItemCount
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
+import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.schibsted.spain.barista.internal.matcher.DrawableMatcher.Companion.withDrawable
 import org.hamcrest.CoreMatchers.allOf
 import org.junit.Rule
@@ -53,10 +54,43 @@ class PlaylistFeature {
         onView(
             allOf(
                 withId(R.id.playlistImage),
-                isDescendantOfA(ntnChildOf(withId(R.id.playlistItems), 0))
+                isDescendantOfA(ntnChildOf(withId(R.id.playlistItems), 1))
             )
         )
             .check(matches(withDrawable(R.drawable.playlist)))
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun displaysLoaderWhileFetchingThePlaylist() {
+        assertDisplayed(R.id.playlistLoader)
+    }
+
+    @Test
+    fun hidesLoader() {
+        Thread.sleep(4000)
+        assertNotDisplayed(R.id.playlistLoader)
+    }
+
+    @Test
+    fun displaysRockImageForRockListItems() {
+        Thread.sleep(4000)
+        onView(
+            allOf(
+                withId(R.id.playlistImage),
+                isDescendantOfA(ntnChildOf(withId(R.id.playlistItems), 0))
+            )
+        )
+            .check(matches(withDrawable(R.drawable.rock)))
+            .check(matches(isDisplayed()))
+
+        onView(
+            allOf(
+                withId(R.id.playlistImage),
+                isDescendantOfA(ntnChildOf(withId(R.id.playlistItems), 3))
+            )
+        )
+            .check(matches(withDrawable(R.drawable.rock)))
             .check(matches(isDisplayed()))
     }
 }

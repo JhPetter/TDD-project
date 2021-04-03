@@ -1,8 +1,9 @@
 package com.petter.testapplication.service.api
 
-import com.petter.testapplication.entity.Playlist
+import com.petter.testapplication.entity.PlaylistRaw
+import retrofit2.http.GET
 
 interface ApiService {
-
-    suspend fun fetchAllPlaylist(): List<Playlist>
+    @GET("playlist")
+    suspend fun fetchAllPlaylist(): List<PlaylistRaw>
 }

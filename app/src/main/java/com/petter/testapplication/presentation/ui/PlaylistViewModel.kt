@@ -1,14 +1,25 @@
 package com.petter.testapplication.presentation.ui
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
 import com.petter.testapplication.entity.Playlist
 import com.petter.testapplication.repository.PlayListRepository
+import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
-class PlaylistViewModel(private val playListRepository: PlayListRepository) : ViewModel() {
+class PlaylistViewModel @Inject constructor(private val playListRepository: PlayListRepository) :
+    ViewModel() {
+
+    private val _loaderLiveData: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    val loaderLiveData: LiveData<Boolean> get() = _loaderLiveData
+
     val playlistLiveData: LiveData<Result<List<Playlist>>> =
-        liveData { emitSource(playListRepository.fetchPlaylist().asLiveData()) }
+        liveData {
+            _loaderLiveData.postValue(true)
+            emitSource(playListRepository.fetchPlaylist()
+                .onEach {
+                    _loaderLiveData.postValue(false)
+                }
+                .asLiveData())
+        }
 
 }
