@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="adapter"
+            type="com.petter.testapplication.presentation.ui.PlaylistAdapter" />
+    </data>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlistItems"
+        android:name="com.petter.testapplication.PlaylistFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:adapter="@{adapter}"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:context=".presentation.ui.PlaylistFragment"
+        tools:listitem="@layout/playlist_item" />
+</layout>
