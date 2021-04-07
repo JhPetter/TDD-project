@@ -53,6 +53,7 @@ class PlaylistDetailViewModelShould : BaseUnitTest() {
         val viewModel = mockSuccessCase()
         viewModel.loaderLiveData.captureValues {
             viewModel.getPlaylistDetail(id)
+            viewModel.playlistDetailLiveData.getValueForTest()
             assertEquals(true, values[0])
         }
     }
@@ -62,6 +63,7 @@ class PlaylistDetailViewModelShould : BaseUnitTest() {
         val viewModel = mockSuccessCase()
         viewModel.loaderLiveData.captureValues {
             viewModel.getPlaylistDetail(id)
+            viewModel.playlistDetailLiveData.getValueForTest()
             assertEquals(false, values.last())
         }
     }
@@ -71,6 +73,7 @@ class PlaylistDetailViewModelShould : BaseUnitTest() {
         val viewModel = mockErrorCase()
         viewModel.loaderLiveData.captureValues {
             viewModel.getPlaylistDetail(id)
+            viewModel.playlistDetailLiveData.getValueForTest()
             assertEquals(false, values.last())
         }
     }

@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
+import com.petter.testapplication.R
 import com.petter.testapplication.databinding.FragmentPlaylistDetailBinding
 import com.petter.testapplication.presentation.factory.PlaylistDetailViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,7 +47,10 @@ class PlaylistDetailFragment : Fragment() {
 
     private fun observeViewModel() {
         playlistDetailViewModel.playlistDetailLiveData.observe(viewLifecycleOwner) {
-            binding.playlist = it.getOrNull()
+            if (it.getOrNull() != null)
+                binding.playlist = it.getOrNull()
+            else
+                Snackbar.make(binding.root, R.string.generic_error, Snackbar.LENGTH_LONG).show()
         }
 
         playlistDetailViewModel.loaderLiveData.observe(viewLifecycleOwner) {

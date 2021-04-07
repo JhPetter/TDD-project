@@ -11,6 +11,7 @@ import com.petter.testapplication.presentation.ui.MainActivity
 import com.petter.util.ntnChildOf
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
+import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertNotExist
 import org.hamcrest.CoreMatchers.allOf
 import org.junit.Rule
 import org.junit.Test
@@ -22,7 +23,7 @@ class PlaylistDetailFeature : BaseUITest() {
 
     @Test
     fun displayPlaylistNameAndDetails() {
-        makePreviousSteps()
+        navigateToDetail()
 
         assertDisplayed(R.id.playlistDetailName)
         assertDisplayed(R.id.playlistDetailDescription)
@@ -33,22 +34,37 @@ class PlaylistDetailFeature : BaseUITest() {
 
     @Test
     fun displayLoaderWhileFetchingDetail() {
-        makePreviousSteps()
         IdlingRegistry.getInstance().unregister(idleResource)
+        Thread.sleep(2000)
+        navigateToDetail()
         assertDisplayed(R.id.playlistDetailLoader)
     }
 
     @Test
     fun hideLoader() {
-        makePreviousSteps()
+        navigateToDetail()
         assertNotDisplayed(R.id.playlistDetailLoader)
     }
 
-    private fun makePreviousSteps() {
+    @Test
+    fun displayErrorMessageWhenNetworksFails() {
+        navigateToDetail(1)
+        assertDisplayed(R.string.generic_error)
+    }
+
+    @Test
+    fun hideErrorMessage() {
+        navigateToDetail(1)
+        Thread.sleep(3500)
+        assertNotExist(R.string.generic_error)
+    }
+
+
+    private fun navigateToDetail(row: Int = 0) {
         onView(
             allOf(
                 withId(R.id.playlistImage),
-                isDescendantOfA(ntnChildOf(withId(R.id.playlistItems), 0))
+                isDescendantOfA(ntnChildOf(withId(R.id.playlistItems), row))
             )
         )
             .perform(ViewActions.click())

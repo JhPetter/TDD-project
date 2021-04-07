@@ -8,6 +8,7 @@ import com.petter.testapplication.entity.Playlist
 import com.petter.testapplication.repository.PlaylistDetailRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class PlaylistDetailViewModel(private val repository: PlaylistDetailRepository) : ViewModel() {
@@ -18,12 +19,15 @@ class PlaylistDetailViewModel(private val repository: PlaylistDetailRepository) 
     val loaderLiveData: LiveData<Boolean> get() = _loaderLiveData
 
     fun getPlaylistDetail(id: Int) {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             _loaderLiveData.postValue(true)
-            repository.getPlaylistDetail(id).collect {
-                _playlistDetailLiveData.postValue(it)
-                _loaderLiveData.postValue(false)
-            }
+            repository.getPlaylistDetail(id)
+                .onEach {
+                    _loaderLiveData.postValue(false)
+                }
+                .collect {
+                    _playlistDetailLiveData.postValue(it)
+                }
         }
     }
 }
