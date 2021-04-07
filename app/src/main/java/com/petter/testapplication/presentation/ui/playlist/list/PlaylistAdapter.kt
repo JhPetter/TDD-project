@@ -1,4 +1,4 @@
-package com.petter.testapplication.presentation.ui
+package com.petter.testapplication.presentation.ui.playlist.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,9 @@ import com.petter.testapplication.BR
 import com.petter.testapplication.databinding.PlaylistItemBinding
 import com.petter.testapplication.entity.Playlist
 
-class PlaylistAdapter : RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>() {
+class PlaylistAdapter(
+    private val listener: (Int) -> Unit
+) : RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>() {
 
     var items: List<Playlist> = arrayListOf()
         set(value) {
@@ -19,7 +21,7 @@ class PlaylistAdapter : RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>
         return PlaylistViewHolder(
             PlaylistItemBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
-            )
+            ), listener
         )
     }
 
@@ -29,11 +31,17 @@ class PlaylistAdapter : RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>
 
     override fun getItemCount(): Int = items.size
 
-    class PlaylistViewHolder(private val binding: PlaylistItemBinding) :
+    class PlaylistViewHolder(
+        private val binding: PlaylistItemBinding,
+        private val listener: (Int) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Playlist) {
             binding.setVariable(BR.playlist, item)
             binding.playlistImage.setImageResource(item.image)
+            binding.root.setOnClickListener {
+                listener(item.id)
+            }
         }
     }
 }

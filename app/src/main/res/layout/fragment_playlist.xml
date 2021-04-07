@@ -7,7 +7,7 @@
 
         <variable
             name="adapter"
-            type="com.petter.testapplication.presentation.ui.PlaylistAdapter" />
+            type="com.petter.testapplication.presentation.ui.playlist.list.PlaylistAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,7 +33,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/playlistLoader"
-            tools:context=".presentation.ui.PlaylistFragment"
+            tools:context=".presentation.ui.playlist.list.PlaylistFragment"
             tools:listitem="@layout/playlist_item" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

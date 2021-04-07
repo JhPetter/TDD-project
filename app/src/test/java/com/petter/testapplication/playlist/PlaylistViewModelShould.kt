@@ -2,8 +2,7 @@ package com.petter.testapplication.playlist
 
 import com.petter.testapplication.BaseUnitTest
 import com.petter.testapplication.entity.Playlist
-import com.petter.testapplication.entity.PlaylistRaw
-import com.petter.testapplication.presentation.ui.PlaylistViewModel
+import com.petter.testapplication.presentation.ui.playlist.PlaylistViewModel
 import com.petter.testapplication.repository.PlayListRepository
 import com.petter.testapplication.utils.captureValues
 import com.petter.testapplication.utils.getValueForTest

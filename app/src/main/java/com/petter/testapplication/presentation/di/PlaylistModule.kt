@@ -1,5 +1,6 @@
 package com.petter.testapplication.presentation.di
 
+import com.jakewharton.espresso.OkHttp3IdlingResource
 import com.petter.testapplication.service.api.ApiService
 import dagger.Module
 import dagger.Provides
@@ -10,25 +11,24 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
+val client = OkHttpClient.Builder().apply {
+    addInterceptor(HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    })
+}.build()
+
+val idleResource = OkHttp3IdlingResource.create("okhttp", client)
+
 @Module
 @InstallIn(FragmentComponent::class)
 class PlaylistModule {
 
-    @Provides
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
 
     @Provides
-    fun provideClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
-        OkHttpClient.Builder().apply {
-            addInterceptor(loggingInterceptor)
-        }.build()
-
-    @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
+    fun provideRetrofit(): Retrofit =
         Retrofit.Builder().baseUrl("http://192.168.1.43:3000/")
-            .client(okHttpClient)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

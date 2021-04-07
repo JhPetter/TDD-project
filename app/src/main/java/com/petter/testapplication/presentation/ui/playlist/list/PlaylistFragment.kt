@@ -1,4 +1,4 @@
-package com.petter.testapplication.presentation.ui
+package com.petter.testapplication.presentation.ui.playlist.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.petter.testapplication.databinding.FragmentPlaylistBinding
 import com.petter.testapplication.entity.Playlist
 import com.petter.testapplication.presentation.factory.PlaylistViewModelFactory
+import com.petter.testapplication.presentation.ui.playlist.PlaylistViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -16,7 +18,11 @@ import javax.inject.Inject
 class PlaylistFragment : Fragment() {
 
     private lateinit var binding: FragmentPlaylistBinding
-    private val adapter: PlaylistAdapter by lazy { PlaylistAdapter() }
+    private val adapter: PlaylistAdapter by lazy {
+        PlaylistAdapter {
+            openDetail(it)
+        }
+    }
 
     @Inject
     lateinit var playlistViewModelFactory: PlaylistViewModelFactory
@@ -62,5 +68,10 @@ class PlaylistFragment : Fragment() {
         resultPlaylist.getOrNull()?.let {
             adapter.items = it
         }
+    }
+
+    private fun openDetail(id: Int) {
+        val action = PlaylistFragmentDirections.actionPlaylistFragmentToPlaylistDetailFragment(id)
+        findNavController().navigate(action)
     }
 }

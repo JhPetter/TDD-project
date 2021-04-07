@@ -1,3 +1,9 @@
 package com.petter.testapplication.entity
 
-class Playlist(val id: Int, val name: String, val category: String, val image: Int)
+data class Playlist(
+    var id: Int,
+    var name: String,
+    var category: String,
+    var image: Int,
+    var description: String = ""
+)

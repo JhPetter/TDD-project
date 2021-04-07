@@ -1,10 +1,12 @@
 package com.petter.testapplication
 
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
+import com.petter.testapplication.presentation.di.idleResource
 import com.petter.testapplication.presentation.ui.MainActivity
 import com.petter.util.ntnChildOf
 import com.schibsted.spain.barista.assertion.BaristaRecyclerViewAssertions.assertRecyclerViewItemCount
@@ -14,10 +16,8 @@ import com.schibsted.spain.barista.internal.matcher.DrawableMatcher.Companion.wi
 import org.hamcrest.CoreMatchers.allOf
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
-class PlaylistFeature {
+class PlaylistFeature : BaseUITest() {
 
     val mActivityRule = ActivityTestRule(MainActivity::class.java)
         @Rule get
@@ -29,7 +29,6 @@ class PlaylistFeature {
 
     @Test
     fun displaysListOfPlaylists() {
-        Thread.sleep(4000)
 
         assertRecyclerViewItemCount(R.id.playlistItems, 10)
 
@@ -63,18 +62,17 @@ class PlaylistFeature {
 
     @Test
     fun displaysLoaderWhileFetchingThePlaylist() {
+        IdlingRegistry.getInstance().unregister(idleResource)
         assertDisplayed(R.id.playlistLoader)
     }
 
     @Test
     fun hidesLoader() {
-        Thread.sleep(4000)
         assertNotDisplayed(R.id.playlistLoader)
     }
 
     @Test
     fun displaysRockImageForRockListItems() {
-        Thread.sleep(4000)
         onView(
             allOf(
                 withId(R.id.playlistImage),
@@ -92,5 +90,18 @@ class PlaylistFeature {
         )
             .check(matches(withDrawable(R.drawable.rock)))
             .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun navigateToDetailScreen() {
+        onView(
+            allOf(
+                withId(R.id.playlistImage),
+                isDescendantOfA(ntnChildOf(withId(R.id.playlistItems), 0))
+            )
+        )
+            .perform(click())
+        assertDisplayed(R.id.playlistDetailRoot)
+
     }
 }

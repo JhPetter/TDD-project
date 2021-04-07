@@ -1,4 +1,4 @@
-package com.petter.testapplication.presentation.ui
+package com.petter.testapplication.presentation.ui.playlist
 
 import androidx.lifecycle.*
 import com.petter.testapplication.entity.Playlist
